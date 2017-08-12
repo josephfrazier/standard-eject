@@ -1,0 +1,20 @@
+{
+  "name": "standard-eject",
+  "version": "1.0.0",
+  "description": "Replaces standardjs with eslint and eslint-config-standard",
+  "bin": "./bin/standard-eject",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josephfrazier/standard-eject.git"
+  },
+  "author": "Joseph Frazier <1212jtraceur@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/josephfrazier/standard-eject/issues"
+  },
+  "homepage": "https://github.com/josephfrazier/standard-eject#readme"
+}

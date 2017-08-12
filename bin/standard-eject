@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Detect whether to use yarn or npm
+if [ -f ./yarn.lock ]
+then
+  removeCommand="yarn remove"
+  addCommand="yarn add --dev"
+else
+  removeCommand="npm uninstall --save-dev"
+  addCommand="npm install --save-dev"
+fi
+
+# Print commands so the user knows what is happening
+set -x
+
+$removeCommand standard
+$addCommand eslint eslint-config-standard eslint-plugin-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-node
+
+# Stop printing commands. See https://stackoverflow.com/a/19226038
+{ set +x; } 2>/dev/null
+
+# Set up .eslintrc
+echo '{' > .eslintrc
+echo '  "extends": "standard"' >> .eslintrc
+echo '}' >> .eslintrc
+
+echo
+echo 'All done! Remember to change `standard` to `eslint .` in your package.json scripts, etc.'
