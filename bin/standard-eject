@@ -14,14 +14,14 @@ fi
 set -x
 
 $removeCommand standard
-$addCommand eslint eslint-config-standard eslint-plugin-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-node
+$addCommand eslint eslint-config-standard eslint-config-standard-jsx eslint-plugin-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-node eslint-plugin-react
 
 # Stop printing commands. See https://stackoverflow.com/a/19226038
 { set +x; } 2>/dev/null
 
 # Set up .eslintrc
 echo '{' > .eslintrc
-echo '  "extends": "standard"' >> .eslintrc
+echo '  "extends": ["standard", "standard-jsx"]' >> .eslintrc
 echo '}' >> .eslintrc
 
 echo
