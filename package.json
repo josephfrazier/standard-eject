@@ -1,6 +1,6 @@
 {
   "name": "standard-eject",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Replaces standardjs with eslint and eslint-config-standard",
   "bin": "./bin/standard-eject",
   "main": "index.js",
