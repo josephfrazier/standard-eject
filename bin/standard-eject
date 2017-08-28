@@ -33,7 +33,8 @@ cp.execSync(addCommand, {stdio: 'inherit'})
 migratePackageJson()
 
 console.log()
-console.log('All done! Remember to change `standard` to `standardx` in your package.json scripts, etc.')
+console.log('All done! I tried to change `standard` to `standardx` in your package.json scripts,')
+console.log("but you should make sure it's correct, and change it in any other files as well.")
 
 function migratePackageJson () {
   const pkgPath = path.join(cwd, 'package.json')
@@ -42,8 +43,16 @@ function migratePackageJson () {
   const newPkg = Object.create(null)
 
   for (const name in pkg) {
-    const newName = name === 'standard' ? 'standardx' : name
-    newPkg[newName] = pkg[name]
+    if (name === 'scripts') {
+      const newScripts = Object.create(null)
+      for (const script in pkg[name]) {
+        newScripts[script] = pkg[name][script].replace(/^standard\b/g, 'standardx')
+      }
+      newPkg[name] = newScripts
+    } else {
+      const newName = name === 'standard' ? 'standardx' : name
+      newPkg[newName] = pkg[name]
+    }
   }
 
   formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
