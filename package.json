@@ -5,7 +5,8 @@
   "bin": "./bin/standard-eject",
   "main": "index.js",
   "scripts": {
-    "test": "standard bin/*"
+    "test": "standard bin/*",
+    "prepublish": "yarn test"
   },
   "repository": {
     "type": "git",
