@@ -14,15 +14,11 @@ fi
 set -x
 
 $removeCommand standard
-$addCommand eslint eslint-config-standard eslint-config-standard-jsx eslint-plugin-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-node eslint-plugin-react
+$addCommand standardx
 
 # Stop printing commands. See https://stackoverflow.com/a/19226038
 { set +x; } 2>/dev/null
 
-# Set up .eslintrc
-echo '{' > .eslintrc
-echo '  "extends": ["standard", "standard-jsx"]' >> .eslintrc
-echo '}' >> .eslintrc
-
 echo
-echo 'All done! Remember to change `standard` to `eslint .` in your package.json scripts, etc.'
+echo 'All done! Remember to change `standard` to `standardx` in your package.json scripts, etc.'
+echo 'Also, if you have a `standard` section in package.json, change it to `standardx` too.'
