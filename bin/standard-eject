@@ -4,6 +4,7 @@ const cp = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
+const falafelBash = require('falafel-bash')
 const formatPackageJson = require('format-package-json')
 
 const cwd = process.cwd()
@@ -64,7 +65,11 @@ function transformScripts (scripts) {
   const newScripts = Object.create(null)
 
   for (const script in scripts) {
-    newScripts[script] = scripts[script].replace(/^standard\b/g, 'standardx')
+    newScripts[script] = falafelBash(scripts[script], node => {
+      if (node.type === 'Command' && node.name.text === 'standard') {
+        node.name.update('standardx')
+      }
+    }).toString()
   }
 
   return newScripts
