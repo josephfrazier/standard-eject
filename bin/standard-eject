@@ -4,6 +4,8 @@ const cp = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
+const formatPackageJson = require('format-package-json')
+
 const cwd = process.cwd()
 let removeCommand
 let addCommand
@@ -28,6 +30,21 @@ cp.execSync(removeCommand, {stdio: 'inherit'})
 console.log(addCommand)
 cp.execSync(addCommand, {stdio: 'inherit'})
 
+migratePackageJson()
+
 console.log()
 console.log('All done! Remember to change `standard` to `standardx` in your package.json scripts, etc.')
-console.log('Also, if you have a `standard` section in package.json, change it to `standardx` too.')
+
+function migratePackageJson () {
+  const pkgPath = path.join(cwd, 'package.json')
+  const pkgFormat = formatPackageJson.readSync(pkgPath)
+  const pkg = require(pkgPath)
+  const newPkg = Object.create(null)
+
+  for (const name in pkg) {
+    const newName = name === 'standard' ? 'standardx' : name
+    newPkg[newName] = pkg[name]
+  }
+
+  formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
+}

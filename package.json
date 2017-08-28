@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/josephfrazier/standard-eject/issues"
   },
-  "homepage": "https://github.com/josephfrazier/standard-eject#readme"
+  "homepage": "https://github.com/josephfrazier/standard-eject#readme",
+  "dependencies": {
+    "format-package-json": "^0.2.0"
+  }
 }
