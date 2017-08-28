@@ -39,11 +39,10 @@ console.log("but you should make sure it's correct, and change it in any other f
 
 function migratePackageJson () {
   const pkgPath = path.join(cwd, 'package.json')
-  const pkgFormat = formatPackageJson.readSync(pkgPath)
   const pkg = require(pkgPath)
   const newPkg = transformPackageJson(pkg)
 
-  formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
+  formatPackageJson.sync(pkgPath, newPkg)
 }
 
 function transformPackageJson (pkg) {
