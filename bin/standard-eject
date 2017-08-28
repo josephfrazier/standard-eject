@@ -1,28 +1,81 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-# Detect whether to use yarn or npm
-if [ -f ./yarn.lock ]
-then
-  removeCommand="yarn remove"
-  addCommand="yarn add --dev"
-else
-  removeCommand="npm uninstall --save-dev"
-  addCommand="npm install --save-dev"
-fi
+const cp = require('child_process')
 
-# Print commands so the user knows what is happening
-set -x
+const falafelBash = require('falafel-bash')
+const formatPackageJson = require('format-package-json')
+const hasYarn = require('has-yarn')
+const pkgUp = require('pkg-up')
 
-$removeCommand standard
-$addCommand eslint eslint-config-standard eslint-config-standard-jsx eslint-plugin-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-node eslint-plugin-react
+const {removeCommand, addCommand} = getCommands()
 
-# Stop printing commands. See https://stackoverflow.com/a/19226038
-{ set +x; } 2>/dev/null
+// Print commands so the user knows what is happening
+logExec(removeCommand)
+logExec(addCommand)
 
-# Set up .eslintrc
-echo '{' > .eslintrc
-echo '  "extends": ["standard", "standard-jsx"]' >> .eslintrc
-echo '}' >> .eslintrc
+migratePackageJson()
 
-echo
-echo 'All done! Remember to change `standard` to `eslint .` in your package.json scripts, etc.'
+console.log()
+console.log('All done! I tried to change `standard` to `standardx` in your package.json scripts,')
+console.log("but you should make sure it's correct, and change it in any other files as well.")
+
+function getCommands () {
+  let removeCommand
+  let addCommand
+
+  // Detect whether to use yarn or npm
+  if (hasYarn()) {
+    removeCommand = 'yarn remove'
+    addCommand = 'yarn add --dev'
+  } else {
+    removeCommand = 'npm uninstall --save-dev'
+    addCommand = 'npm install --save-dev'
+  }
+
+  removeCommand += ' standard'
+  addCommand += ' standardx'
+
+  return {removeCommand, addCommand}
+}
+
+function logExec (command) {
+  console.log(command)
+  cp.execSync(command, {stdio: 'inherit'})
+}
+
+function migratePackageJson () {
+  const pkgPath = pkgUp.sync()
+  const pkg = require(pkgPath)
+  const newPkg = transformPackageJson(pkg)
+
+  formatPackageJson.sync(pkgPath, newPkg)
+}
+
+function transformPackageJson (pkg) {
+  const newPkg = Object.create(null)
+
+  for (const name in pkg) {
+    if (name === 'scripts') {
+      newPkg.scripts = transformScripts(pkg.scripts)
+    } else {
+      const newName = name === 'standard' ? 'standardx' : name
+      newPkg[newName] = pkg[name]
+    }
+  }
+
+  return newPkg
+}
+
+function transformScripts (scripts) {
+  const newScripts = Object.create(null)
+
+  for (const script in scripts) {
+    newScripts[script] = falafelBash(scripts[script], node => {
+      if (node.type === 'Command' && node.name.text === 'standard') {
+        node.name.update('standardx')
+      }
+    }).toString()
+  }
+
+  return newScripts
+}

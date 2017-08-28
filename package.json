@@ -5,7 +5,7 @@
   "bin": "./bin/standard-eject",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard bin/*"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/josephfrazier/standard-eject/issues"
   },
-  "homepage": "https://github.com/josephfrazier/standard-eject#readme"
+  "homepage": "https://github.com/josephfrazier/standard-eject#readme",
+  "dependencies": {
+    "falafel-bash": "https://github.com/parro-it/falafel-bash#656353237cc8f4deedf27b84ef617ef18072f3a6",
+    "format-package-json": "^0.2.0",
+    "has-yarn": "^1.0.0",
+    "pkg-up": "^2.0.0"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3"
+  }
 }
