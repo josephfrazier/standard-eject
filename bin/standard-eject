@@ -10,12 +10,8 @@ const pkgUp = require('pkg-up')
 const {removeCommand, addCommand} = getCommands()
 
 // Print commands so the user knows what is happening
-
-console.log(removeCommand)
-cp.execSync(removeCommand, {stdio: 'inherit'})
-
-console.log(addCommand)
-cp.execSync(addCommand, {stdio: 'inherit'})
+logExec(removeCommand)
+logExec(addCommand)
 
 migratePackageJson()
 
@@ -40,6 +36,11 @@ function getCommands () {
   addCommand += ' standardx'
 
   return {removeCommand, addCommand}
+}
+
+function logExec (command) {
+  console.log(command)
+  cp.execSync(command, {stdio: 'inherit'})
 }
 
 function migratePackageJson () {
