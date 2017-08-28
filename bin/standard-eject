@@ -7,20 +7,7 @@ const formatPackageJson = require('format-package-json')
 const hasYarn = require('has-yarn')
 const pkgUp = require('pkg-up')
 
-let removeCommand
-let addCommand
-
-// Detect whether to use yarn or npm
-if (hasYarn()) {
-  removeCommand = 'yarn remove'
-  addCommand = 'yarn add --dev'
-} else {
-  removeCommand = 'npm uninstall --save-dev'
-  addCommand = 'npm install --save-dev'
-}
-
-removeCommand += ' standard'
-addCommand += ' standardx'
+const {removeCommand, addCommand} = getCommands()
 
 // Print commands so the user knows what is happening
 
@@ -35,6 +22,25 @@ migratePackageJson()
 console.log()
 console.log('All done! I tried to change `standard` to `standardx` in your package.json scripts,')
 console.log("but you should make sure it's correct, and change it in any other files as well.")
+
+function getCommands () {
+  let removeCommand
+  let addCommand
+
+  // Detect whether to use yarn or npm
+  if (hasYarn()) {
+    removeCommand = 'yarn remove'
+    addCommand = 'yarn add --dev'
+  } else {
+    removeCommand = 'npm uninstall --save-dev'
+    addCommand = 'npm install --save-dev'
+  }
+
+  removeCommand += ' standard'
+  addCommand += ' standardx'
+
+  return {removeCommand, addCommand}
+}
 
 function migratePackageJson () {
   const pkgPath = pkgUp.sync()
