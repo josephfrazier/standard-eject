@@ -20,7 +20,8 @@
   "dependencies": {
     "falafel-bash": "https://github.com/parro-it/falafel-bash#656353237cc8f4deedf27b84ef617ef18072f3a6",
     "format-package-json": "^0.2.0",
-    "has-yarn": "^1.0.0"
+    "has-yarn": "^1.0.0",
+    "pkg-up": "^2.0.0"
   },
   "devDependencies": {
     "standard": "^10.0.3"

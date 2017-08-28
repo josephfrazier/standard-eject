@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 const cp = require('child_process')
-const path = require('path')
 
 const falafelBash = require('falafel-bash')
 const formatPackageJson = require('format-package-json')
 const hasYarn = require('has-yarn')
+const pkgUp = require('pkg-up')
 
-const cwd = process.cwd()
 let removeCommand
 let addCommand
 
@@ -38,7 +37,7 @@ console.log('All done! I tried to change `standard` to `standardx` in your packa
 console.log("but you should make sure it's correct, and change it in any other files as well.")
 
 function migratePackageJson () {
-  const pkgPath = path.join(cwd, 'package.json')
+  const pkgPath = pkgUp.sync()
   const pkg = require(pkgPath)
   const newPkg = transformPackageJson(pkg)
 
