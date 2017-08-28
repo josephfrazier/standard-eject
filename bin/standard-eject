@@ -44,11 +44,7 @@ function migratePackageJson () {
 
   for (const name in pkg) {
     if (name === 'scripts') {
-      const newScripts = Object.create(null)
-      for (const script in pkg[name]) {
-        newScripts[script] = pkg[name][script].replace(/^standard\b/g, 'standardx')
-      }
-      newPkg[name] = newScripts
+      newPkg.scripts = transformScripts(pkg.scripts)
     } else {
       const newName = name === 'standard' ? 'standardx' : name
       newPkg[newName] = pkg[name]
@@ -56,4 +52,14 @@ function migratePackageJson () {
   }
 
   formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
+}
+
+function transformScripts (scripts) {
+  const newScripts = Object.create(null)
+
+  for (const script in scripts) {
+    newScripts[script] = scripts[script].replace(/^standard\b/g, 'standardx')
+  }
+
+  return newScripts
 }
