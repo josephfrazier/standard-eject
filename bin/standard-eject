@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 const cp = require('child_process')
-const fs = require('fs')
 const path = require('path')
 
 const falafelBash = require('falafel-bash')
 const formatPackageJson = require('format-package-json')
+const hasYarn = require('has-yarn')
 
 const cwd = process.cwd()
 let removeCommand
 let addCommand
 
 // Detect whether to use yarn or npm
-if (fs.existsSync(path.join(cwd, 'yarn.lock'))) {
+if (hasYarn()) {
   removeCommand = 'yarn remove'
   addCommand = 'yarn add --dev'
 } else {
