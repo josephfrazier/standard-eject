@@ -40,6 +40,12 @@ function migratePackageJson () {
   const pkgPath = path.join(cwd, 'package.json')
   const pkgFormat = formatPackageJson.readSync(pkgPath)
   const pkg = require(pkgPath)
+  const newPkg = transformPackageJson(pkg)
+
+  formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
+}
+
+function transformPackageJson (pkg) {
   const newPkg = Object.create(null)
 
   for (const name in pkg) {
@@ -51,7 +57,7 @@ function migratePackageJson () {
     }
   }
 
-  formatPackageJson.writeSync(pkgPath, newPkg, pkgFormat)
+  return newPkg
 }
 
 function transformScripts (scripts) {
