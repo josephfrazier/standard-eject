@@ -1,24 +1,33 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-# Detect whether to use yarn or npm
-if [ -f ./yarn.lock ]
-then
-  removeCommand="yarn remove"
-  addCommand="yarn add --dev"
-else
-  removeCommand="npm uninstall --save-dev"
-  addCommand="npm install --save-dev"
-fi
+const cp = require('child_process')
+const fs = require('fs')
+const path = require('path')
 
-# Print commands so the user knows what is happening
-set -x
+const cwd = process.cwd()
+let removeCommand
+let addCommand
 
-$removeCommand standard
-$addCommand standardx
+// Detect whether to use yarn or npm
+if (fs.existsSync(path.join(cwd, 'yarn.lock'))) {
+  removeCommand = 'yarn remove'
+  addCommand = 'yarn add --dev'
+} else {
+  removeCommand = 'npm uninstall --save-dev'
+  addCommand = 'npm install --save-dev'
+}
 
-# Stop printing commands. See https://stackoverflow.com/a/19226038
-{ set +x; } 2>/dev/null
+removeCommand += ' standard'
+addCommand += ' standardx'
 
-echo
-echo 'All done! Remember to change `standard` to `standardx` in your package.json scripts, etc.'
-echo 'Also, if you have a `standard` section in package.json, change it to `standardx` too.'
+// Print commands so the user knows what is happening
+
+console.log(removeCommand)
+cp.execSync(removeCommand, {stdio: 'inherit'})
+
+console.log(addCommand)
+cp.execSync(addCommand, {stdio: 'inherit'})
+
+console.log()
+console.log('All done! Remember to change `standard` to `standardx` in your package.json scripts, etc.')
+console.log('Also, if you have a `standard` section in package.json, change it to `standardx` too.')
