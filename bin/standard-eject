@@ -7,7 +7,9 @@ const formatPackageJson = require('format-package-json')
 const hasYarn = require('has-yarn')
 const pkgUp = require('pkg-up')
 
-doInstall()
+if (process.argv[2] !== '--no-install') {
+  doInstall()
+}
 
 migratePackageJson()
 
