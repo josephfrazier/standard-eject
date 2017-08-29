@@ -45,6 +45,10 @@ function logExec (command) {
 
 function migratePackageJson () {
   const pkgPath = pkgUp.sync()
+  if (!pkgPath) {
+    return
+  }
+
   const pkg = require(pkgPath)
   const newPkg = transformPackageJson(pkg)
 
