@@ -21,3 +21,10 @@ npm install --global standard-eject
 # In the directory containing package.json:
 standard-eject
 ```
+
+If you don't want to install `standardx` into the project (and uninstall `standard`),
+pass `--no-install` as the first argument:
+
+```bash
+standard-eject --no-install
+```
