@@ -32,10 +32,10 @@ function getCommands () {
   // Detect whether to use yarn or npm
   if (hasYarn()) {
     removeCommand = 'yarn remove'
-    addCommand = 'yarn add --dev'
+    addCommand = 'yarn add --dev --ignore-scripts'
   } else {
     removeCommand = 'npm uninstall --save-dev'
-    addCommand = 'npm install --save-dev'
+    addCommand = 'npm install --save-dev --ignore-scripts'
   }
 
   removeCommand += ' standard'
