@@ -25,6 +25,12 @@
     "pkg-up": "^2.0.0"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "cross-spawn": "^5.1.0",
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "run-parallel-limit": "^1.0.3",
+    "standard": "^10.0.3",
+    "standard-packages": "^3.2.10",
+    "tape": "^4.8.0"
   }
 }
