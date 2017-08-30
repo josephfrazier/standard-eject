@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 const cp = require('child_process')
+const path = require('path')
 
 const falafelBash = require('falafel-bash')
 const formatPackageJson = require('format-package-json')
 const hasYarn = require('has-yarn')
-const pkgUp = require('pkg-up')
 
 if (process.argv[2] !== '--no-install') {
   doInstall()
@@ -50,7 +50,7 @@ function logExec (command) {
 }
 
 function migratePackageJson () {
-  const pkgPath = pkgUp.sync()
+  const pkgPath = path.resolve(process.cwd(), 'package.json')
   if (!pkgPath) {
     return
   }
