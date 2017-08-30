@@ -17,7 +17,7 @@ var standardPackages = require('standard-packages')
 var test = require('tape')
 
 var GIT = 'git'
-var STANDARD = path.join(__dirname, '..', 'bin', 'cmd.js')
+var STANDARD = path.join(__dirname, '..', 'node_modules', '.bin', 'standardx')
 var TMP = path.join(__dirname, '..', 'tmp')
 var PARALLEL_LIMIT = os.cpus().length
 
@@ -99,6 +99,8 @@ test('test github repos that use `standard`', function (t) {
         function runStandard (cb) {
           var args = [ '--verbose' ]
           if (pkg.args) args.push.apply(args, pkg.args)
+          var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
+          crossSpawn.sync(STANDARD_EJECT, ['--no-install'], { cwd: folder })
           spawn(STANDARD, args, { cwd: folder }, function (err) {
             var str = name + ' (' + pkg.repo + ')'
             if (err) { t.fail(str) } else { t.pass(str) }

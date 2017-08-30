@@ -1240,6 +1240,15 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
+standard-engine@^7.0.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/standard-engine/-/standard-engine-7.1.0.tgz#9ef48ac8e70de42dad8246c6f48f923a47469ea9"
+  dependencies:
+    deglob "^2.1.0"
+    get-stdin "^5.0.1"
+    minimist "^1.1.0"
+    pkg-conf "^2.0.0"
+
 standard-engine@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/standard-engine/-/standard-engine-7.0.0.tgz#ebb77b9c8fc2c8165ffa353bd91ba0dff41af690"
@@ -1266,6 +1275,13 @@ standard@^10.0.3:
     eslint-plugin-react "~6.10.0"
     eslint-plugin-standard "~3.0.1"
     standard-engine "~7.0.0"
+
+standardx@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/standardx/-/standardx-1.0.2.tgz#2f5adcc36046066455cd9edd25d796c02aabdf94"
+  dependencies:
+    standard "^10.0.3"
+    standard-engine "^7.0.0"
 
 string-width@^1.0.1:
   version "1.0.2"

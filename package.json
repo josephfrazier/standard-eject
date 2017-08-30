@@ -31,6 +31,7 @@
     "run-parallel-limit": "^1.0.3",
     "standard": "^10.0.3",
     "standard-packages": "^3.2.10",
+    "standardx": "^1.0.2",
     "tape": "^4.8.0"
   }
 }
