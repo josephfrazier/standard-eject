@@ -102,6 +102,7 @@ test('test github repos that use `standard`', function (t) {
           var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
           crossSpawn.sync(STANDARD_EJECT, ['--no-install'], { cwd: folder })
           spawn(STANDARD, args, { cwd: folder }, function (err) {
+            crossSpawn.sync(GIT, ['reset', '--hard'], { cwd: folder })
             var str = name + ' (' + pkg.repo + ')'
             if (err) { t.fail(str) } else { t.pass(str) }
             cb(null)
