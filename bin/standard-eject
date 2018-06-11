@@ -1,23 +1,29 @@
 #!/usr/bin/env node
 
 const cp = require('child_process')
+const path = require('path')
 
 const falafelBash = require('falafel-bash')
 const formatPackageJson = require('format-package-json')
 const hasYarn = require('has-yarn')
-const pkgUp = require('pkg-up')
 
-const {removeCommand, addCommand} = getCommands()
-
-// Print commands so the user knows what is happening
-logExec(removeCommand)
-logExec(addCommand)
+if (process.argv[2] !== '--no-install') {
+  doInstall()
+}
 
 migratePackageJson()
 
 console.log()
 console.log('All done! I tried to change `standard` to `standardx` in your package.json scripts,')
 console.log("but you should make sure it's correct, and change it in any other files as well.")
+
+function doInstall () {
+  const {removeCommand, addCommand} = getCommands()
+
+  // Print commands so the user knows what is happening
+  logExec(removeCommand)
+  logExec(addCommand)
+}
 
 function getCommands () {
   let removeCommand
@@ -26,10 +32,10 @@ function getCommands () {
   // Detect whether to use yarn or npm
   if (hasYarn()) {
     removeCommand = 'yarn remove'
-    addCommand = 'yarn add --dev'
+    addCommand = 'yarn add --dev --ignore-scripts'
   } else {
     removeCommand = 'npm uninstall --save-dev'
-    addCommand = 'npm install --save-dev'
+    addCommand = 'npm install --save-dev --ignore-scripts'
   }
 
   removeCommand += ' standard'
@@ -44,7 +50,11 @@ function logExec (command) {
 }
 
 function migratePackageJson () {
-  const pkgPath = pkgUp.sync()
+  const pkgPath = path.resolve(process.cwd(), 'package.json')
+  if (!pkgPath) {
+    return
+  }
+
   const pkg = require(pkgPath)
   const newPkg = transformPackageJson(pkg)
 
