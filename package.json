@@ -5,7 +5,7 @@
   "bin": "./bin/standard-eject",
   "main": "index.js",
   "scripts": {
-    "lint": "standard bin/*",
+    "lint": "standard bin/* test/*",
     "pretest": "yarn lint",
     "test": "node test/clone.js",
     "prepublishOnly": "yarn test"
