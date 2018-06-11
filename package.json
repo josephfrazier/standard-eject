@@ -29,13 +29,14 @@
     "babel-eslint": "^7.2.3",
     "cross-spawn": "^5.1.0",
     "eslint-config-standard-tunnckocore": "^1.0.7",
+    "eslint-plugin-babel": "^5.1.0",
     "global-modules": "^1.0.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "run-parallel-limit": "^1.0.3",
     "standard": "^10.0.3",
-    "standard-packages": "^3.2.10",
-    "standardx": "^1.0.2",
+    "standard-packages": "^3.4.4",
+    "standardx": "^2.1.0",
     "tape": "^4.8.0"
   }
 }
