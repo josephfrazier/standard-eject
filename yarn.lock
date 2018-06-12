@@ -1992,9 +1992,9 @@ standard-engine@~8.0.0:
     minimist "^1.1.0"
     pkg-conf "^2.0.0"
 
-standard-packages@^3.4.4:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/standard-packages/-/standard-packages-3.4.4.tgz#023872e452605025c051675b3ca13a7a5106c4b5"
+standard-packages@^3.4.5:
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/standard-packages/-/standard-packages-3.4.5.tgz#1f220ca0275d16ee15ae0a26926a48c995d26aad"
 
 standard@^10.0.3:
   version "10.0.3"
