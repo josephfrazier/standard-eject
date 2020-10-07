@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/josephfrazier/standard-eject#readme",
   "dependencies": {
+    "falafel-bash": "^1.0.3",
     "format-package-json": "^0.2.0",
     "has-yarn": "^1.0.0"
   },
