@@ -80,9 +80,9 @@ function transformScripts (scripts) {
   const newScripts = Object.create(null)
 
   for (const script in scripts) {
-    newScripts[script] = falafelBash(scripts[script], node => {
-      if (node.type === 'Command' && node.name.text === 'standard') {
-        node.name.update('standardx')
+    newScripts[script] = falafelBash(scripts[script], ({ type, name }) => {
+      if (type === 'Command' && name.text === 'standard') {
+        name.update('standardx')
       }
     }).toString()
   }

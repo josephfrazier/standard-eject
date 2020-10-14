@@ -6,22 +6,22 @@
  * VERSION BUMP.)
  */
 
-var crossSpawn = require('cross-spawn')
-var fs = require('fs')
-var minimist = require('minimist')
-var mkdirp = require('mkdirp')
-var os = require('os')
-var parallelLimit = require('run-parallel-limit')
-var path = require('path')
-var standardPackages = require('standard-packages')
-var test = require('tape')
+const crossSpawn = require('cross-spawn')
+const fs = require('fs')
+const minimist = require('minimist')
+const mkdirp = require('mkdirp')
+const os = require('os')
+const parallelLimit = require('run-parallel-limit')
+const path = require('path')
+const standardPackages = require('standard-packages')
+const test = require('tape')
 
-var GIT = 'git'
-var STANDARD = path.join(__dirname, '..', 'node_modules', '.bin', 'standardx')
-var TMP = path.join(__dirname, '..', 'tmp')
-var PARALLEL_LIMIT = os.cpus().length
+const GIT = 'git'
+const STANDARD = path.join(__dirname, '..', 'node_modules', '.bin', 'standardx')
+const TMP = path.join(__dirname, '..', 'tmp')
+const PARALLEL_LIMIT = os.cpus().length
 
-var argv = minimist(process.argv.slice(2), {
+const argv = minimist(process.argv.slice(2), {
   boolean: [
     'disabled',
     'offline',
@@ -30,11 +30,11 @@ var argv = minimist(process.argv.slice(2), {
   ]
 })
 
-var testPackages = argv.quick
+let testPackages = argv.quick
   ? standardPackages.test.slice(0, 20)
   : standardPackages.test
 
-var failsWithStandardx = [
+const failsWithStandardx = [
   'auto-changelog',
   'babel-plugin-istanbul',
   'bitmidi.com',
@@ -60,8 +60,8 @@ testPackages.forEach(pkg => {
   }
 })
 
-var disabledPackages = []
-testPackages = testPackages.filter(function (pkg) {
+const disabledPackages = []
+testPackages = testPackages.filter(pkg => {
   if (pkg.disable) disabledPackages.push(pkg)
   return !pkg.disable
 })
@@ -69,33 +69,33 @@ testPackages = testPackages.filter(function (pkg) {
 if (argv.disabled) {
   testPackages = disabledPackages
 } else {
-  test('Disabled Packages', function (t) {
-    disabledPackages.forEach(function (pkg) {
-      console.log('DISABLED: ' + pkg.name + ': ' + pkg.disable + ' (' + pkg.repo + ')')
+  test('Disabled Packages', t => {
+    disabledPackages.forEach(({ name, disable, repo }) => {
+      console.log(`DISABLED: ${name}: ${disable} (${repo})`)
     })
     t.end()
   })
 }
 
-test('test github repos that use `standard`', function (t) {
+test('test github repos that use `standard`', t => {
   t.plan(testPackages.length)
 
   mkdirp.sync(TMP)
 
-  parallelLimit(testPackages.map(function (pkg) {
-    var name = pkg.name
-    var url = pkg.repo + '.git'
-    var folder = path.join(TMP, name)
-    return function (cb) {
-      fs.access(path.join(TMP, name), fs.R_OK | fs.W_OK, function (err) {
+  parallelLimit(testPackages.map(pkg => {
+    const name = pkg.name
+    const url = `${pkg.repo}.git`
+    const folder = path.join(TMP, name)
+    return cb => {
+      fs.access(path.join(TMP, name), fs.R_OK | fs.W_OK, err => {
         if (argv.offline) {
           if (err) {
-            t.pass('SKIPPING (offline): ' + name + ' (' + pkg.repo + ')')
+            t.pass(`SKIPPING (offline): ${name} (${pkg.repo})`)
             return cb(null)
           }
           runStandard(cb)
         } else {
-          downloadPackage(function (err) {
+          downloadPackage(err => {
             if (err) return cb(err)
             runStandard(cb)
           })
@@ -107,53 +107,53 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function gitClone (cb) {
-          var args = ['clone', '--depth', 1, url, path.join(TMP, name)]
-          spawn(GIT, args, { stdio: 'ignore' }, function (err) {
-            if (err) err.message += ' (git clone) (' + name + ')'
+          const args = ['clone', '--depth', 1, url, path.join(TMP, name)]
+          spawn(GIT, args, { stdio: 'ignore' }, err => {
+            if (err) err.message += ` (git clone) (${name})`
             cb(err)
           })
         }
 
         function gitPull (cb) {
-          var args = ['pull']
-          spawn(GIT, args, { cwd: folder, stdio: 'ignore' }, function (err) {
-            if (err) err.message += ' (git pull) (' + name + ')'
+          const args = ['pull']
+          spawn(GIT, args, { cwd: folder, stdio: 'ignore' }, err => {
+            if (err) err.message += ` (git pull) (${name})`
             cb(err)
           })
         }
 
         function runStandard (cb) {
           try {
-            var packageJson = require(path.join(folder, 'package.json'))
+            const packageJson = require(path.join(folder, 'package.json'))
 
-            var devDependencies = packageJson.devDependencies
-            var dependencies = packageJson.dependencies
+            const devDependencies = packageJson.devDependencies
+            const dependencies = packageJson.dependencies
 
-            var notInDevDependences = (devDependencies && !('standard' in devDependencies))
-            var notInDependencies = (dependencies && !('standard' in dependencies))
+            const notInDevDependences = (devDependencies && !('standard' in devDependencies))
+            const notInDependencies = (dependencies && !('standard' in dependencies))
 
             if (notInDevDependences && notInDependencies) {
-              t.pass('DOES NOT USE STANDARD: ' + pkg.name + ' (' + pkg.repo + ')')
+              t.pass(`DOES NOT USE STANDARD: ${pkg.name} (${pkg.repo})`)
               return cb(null)
             }
           } catch (err) {
-            console.log('COULD NOT FIND PACKAGE.JSON: ' + pkg.name + ' (' + pkg.repo + ')')
+            console.log(`COULD NOT FIND PACKAGE.JSON: ${pkg.name} (${pkg.repo})`)
           }
 
-          var args = ['--verbose']
+          const args = ['--verbose']
           if (pkg.args) args.push.apply(args, pkg.args)
-          var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
+          const STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
           crossSpawn.sync(STANDARD_EJECT, ['--no-install'], { cwd: folder })
-          spawn(STANDARD, args, { cwd: folder }, function (err) {
+          spawn(STANDARD, args, { cwd: folder }, err => {
             crossSpawn.sync(GIT, ['reset', '--hard'], { cwd: folder })
-            var str = name + ' (' + pkg.repo + ')'
+            const str = `${name} (${pkg.repo})`
             if (err) { t.fail(str) } else { t.pass(str) }
             cb(null)
           })
         }
       })
     }
-  }), PARALLEL_LIMIT, function (err) {
+  }), PARALLEL_LIMIT, err => {
     if (err) throw err
   })
 })
@@ -161,10 +161,10 @@ test('test github repos that use `standard`', function (t) {
 function spawn (command, args, opts, cb) {
   if (!opts.stdio) opts.stdio = argv.quiet ? 'ignore' : 'inherit'
 
-  var child = crossSpawn(command, args, opts)
+  const child = crossSpawn(command, args, opts)
   child.on('error', cb)
-  child.on('close', function (code) {
-    if (code !== 0) return cb(new Error('non-zero exit code: ' + code))
+  child.on('close', code => {
+    if (code !== 0) return cb(new Error(`non-zero exit code: ${code}`))
     cb(null)
   })
   return child
