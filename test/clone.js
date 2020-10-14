@@ -107,7 +107,7 @@ test('test github repos that use `standard`', function (t) {
             var notInDependencies = (dependencies && !('standard' in dependencies))
 
             if (notInDevDependences && notInDependencies) {
-              console.log('DOES NOT USE STANDARD: ' + pkg.name + ' (' + pkg.repo + ')')
+              t.pass('DOES NOT USE STANDARD: ' + pkg.name + ' (' + pkg.repo + ')')
               return cb(null)
             }
           } catch (err) {
