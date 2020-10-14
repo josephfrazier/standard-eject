@@ -3,7 +3,6 @@
   "version": "1.0.8",
   "description": "Replaces standardjs with eslint and eslint-config-standard",
   "bin": "./bin/standard-eject",
-  "main": "index.js",
   "scripts": {
     "lint": "standard bin/* test/*",
     "pretest": "yarn lint",
