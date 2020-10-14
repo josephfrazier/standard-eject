@@ -81,7 +81,7 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function gitClone (cb) {
-          var args = [ 'clone', '--depth', 1, url, path.join(TMP, name) ]
+          var args = ['clone', '--depth', 1, url, path.join(TMP, name)]
           spawn(GIT, args, { stdio: 'ignore' }, function (err) {
             if (err) err.message += ' (git clone) (' + name + ')'
             cb(err)
@@ -89,7 +89,7 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function gitPull (cb) {
-          var args = [ 'pull' ]
+          var args = ['pull']
           spawn(GIT, args, { cwd: folder, stdio: 'ignore' }, function (err) {
             if (err) err.message += ' (git pull) (' + name + ')'
             cb(err)
@@ -97,7 +97,7 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function runStandard (cb) {
-          var args = [ '--verbose' ]
+          var args = ['--verbose']
           if (pkg.args) args.push.apply(args, pkg.args)
           var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
           crossSpawn.sync(STANDARD_EJECT, ['--no-install'], { cwd: folder })
