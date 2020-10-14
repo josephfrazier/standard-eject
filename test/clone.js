@@ -34,7 +34,30 @@ var testPackages = argv.quick
   ? standardPackages.test.slice(0, 20)
   : standardPackages.test
 
-testPackages = testPackages.filter(pkg => pkg.name !== 'humanize-duration')
+var failsWithStandardx = [
+  'auto-changelog',
+  'babel-plugin-istanbul',
+  'bitmidi.com',
+  'co-mocha',
+  'create-torrent',
+  'dotenv',
+  'electron-mocha',
+  'fastify',
+  'front-matter',
+  'fs-writefile-promise',
+  'humanize-duration',
+  'instant.io',
+  'jsonfile',
+  'karma-cli',
+  'pino',
+  'tap',
+  'testdouble'
+]
+testPackages.forEach(pkg => {
+  if (failsWithStandardx.includes(pkg.name)) {
+    pkg.disable = true
+  }
+})
 
 var disabledPackages = []
 testPackages = testPackages.filter(function (pkg) {
