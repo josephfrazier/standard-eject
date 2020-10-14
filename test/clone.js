@@ -97,6 +97,23 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function runStandard (cb) {
+          try {
+            var packageJson = require(path.join(folder, 'package.json'))
+
+            var devDependencies = packageJson.devDependencies
+            var dependencies = packageJson.dependencies
+
+            var notInDevDependences = (devDependencies && !('standard' in devDependencies))
+            var notInDependencies = (dependencies && !('standard' in dependencies))
+
+            if (notInDevDependences && notInDependencies) {
+              console.log('DOES NOT USE STANDARD: ' + pkg.name + ' (' + pkg.repo + ')')
+              return cb(null)
+            }
+          } catch (err) {
+            console.log('COULD NOT FIND PACKAGE.JSON: ' + pkg.name + ' (' + pkg.repo + ')')
+          }
+
           var args = ['--verbose']
           if (pkg.args) args.push.apply(args, pkg.args)
           var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
