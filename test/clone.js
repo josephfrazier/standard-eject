@@ -52,7 +52,8 @@ const failsWithStandardx = [
   'karma-cli',
   'pino',
   'tap',
-  'testdouble'
+  'testdouble',
+  'webtorrent-desktop'
 ]
 testPackages.forEach(pkg => {
   if (failsWithStandardx.includes(pkg.name)) {
