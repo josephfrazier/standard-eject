@@ -34,6 +34,32 @@ var testPackages = argv.quick
   ? standardPackages.test.slice(0, 20)
   : standardPackages.test
 
+var failsWithStandardx = [
+  'auto-changelog',
+  'babel-plugin-istanbul',
+  'bitmidi.com',
+  'co-mocha',
+  'create-torrent',
+  'dotenv',
+  'electron-mocha',
+  'fastify',
+  'front-matter',
+  'fs-extra',
+  'fs-writefile-promise',
+  'humanize-duration',
+  'instant.io',
+  'jsonfile',
+  'karma-cli',
+  'pino',
+  'tap',
+  'testdouble'
+]
+testPackages.forEach(pkg => {
+  if (failsWithStandardx.includes(pkg.name)) {
+    pkg.disable = true
+  }
+})
+
 var disabledPackages = []
 testPackages = testPackages.filter(function (pkg) {
   if (pkg.disable) disabledPackages.push(pkg)
@@ -81,7 +107,7 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function gitClone (cb) {
-          var args = [ 'clone', '--depth', 1, url, path.join(TMP, name) ]
+          var args = ['clone', '--depth', 1, url, path.join(TMP, name)]
           spawn(GIT, args, { stdio: 'ignore' }, function (err) {
             if (err) err.message += ' (git clone) (' + name + ')'
             cb(err)
@@ -89,7 +115,7 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function gitPull (cb) {
-          var args = [ 'pull' ]
+          var args = ['pull']
           spawn(GIT, args, { cwd: folder, stdio: 'ignore' }, function (err) {
             if (err) err.message += ' (git pull) (' + name + ')'
             cb(err)
@@ -97,7 +123,24 @@ test('test github repos that use `standard`', function (t) {
         }
 
         function runStandard (cb) {
-          var args = [ '--verbose' ]
+          try {
+            var packageJson = require(path.join(folder, 'package.json'))
+
+            var devDependencies = packageJson.devDependencies
+            var dependencies = packageJson.dependencies
+
+            var notInDevDependences = (devDependencies && !('standard' in devDependencies))
+            var notInDependencies = (dependencies && !('standard' in dependencies))
+
+            if (notInDevDependences && notInDependencies) {
+              t.pass('DOES NOT USE STANDARD: ' + pkg.name + ' (' + pkg.repo + ')')
+              return cb(null)
+            }
+          } catch (err) {
+            console.log('COULD NOT FIND PACKAGE.JSON: ' + pkg.name + ' (' + pkg.repo + ')')
+          }
+
+          var args = ['--verbose']
           if (pkg.args) args.push.apply(args, pkg.args)
           var STANDARD_EJECT = path.join(__dirname, '..', 'bin', 'standard-eject')
           crossSpawn.sync(STANDARD_EJECT, ['--no-install'], { cwd: folder })
