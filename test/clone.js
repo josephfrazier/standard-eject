@@ -44,6 +44,7 @@ var failsWithStandardx = [
   'electron-mocha',
   'fastify',
   'front-matter',
+  'fs-extra',
   'fs-writefile-promise',
   'humanize-duration',
   'instant.io',
