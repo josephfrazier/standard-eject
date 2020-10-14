@@ -34,6 +34,8 @@ var testPackages = argv.quick
   ? standardPackages.test.slice(0, 20)
   : standardPackages.test
 
+testPackages = testPackages.filter(pkg => pkg.name !== 'humanize-duration')
+
 var disabledPackages = []
 testPackages = testPackages.filter(function (pkg) {
   if (pkg.disable) disabledPackages.push(pkg)
